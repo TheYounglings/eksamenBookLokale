@@ -137,7 +137,7 @@ class GUI:
             messagebox.showerror("Login Failed", "Invalid username or password.")
 
     def handle_logout(self):
-        self.current_user = None
+        self.user = None 
         for widget in self.root.winfo_children():
             widget.destroy()
         self.setup_ui()
