@@ -9,7 +9,7 @@ class UserManager:
 
 class BookingManager:
     def __init__(self, dal):
-        self.dal = dal  # Dependency injection of Data Access Layer
+        self.dal = dal  
     def get_current_week_dates(self):
         today = datetime.now()
         start = today - timedelta(days=today.weekday())

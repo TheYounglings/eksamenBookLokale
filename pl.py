@@ -11,14 +11,9 @@ class GUI:
         self.root = root
         self.root.title("Lokalebooker")
         self.user = None
-        
-        # Create the Business Logic Layer instance
         self.booking_manager = BookingManager(DataAccessLayer())
         self.user_manager = UserManager(DataAccessLayer())
-        
-        # UI Elements setup (Headers, Buttons, Forms, etc.)
         self.rooms = self.booking_manager.get_rooms()
-
         self.setup_ui()
 
         
@@ -38,18 +33,18 @@ class GUI:
         root.bind("<F11>", toggle_fullscreen)
         root.bind("<Escape>", end_fullscreen)
 
-        # Dynamically set initial window geometry (optional fallback)
+        
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         root.geometry(f"{screen_width}x{screen_height}")
 
-        # Background and main layout
+       
         root.configure(bg="white")
 
         header = tk.Frame(root, bg="gray", height=50)
         header.pack(fill="x")
 
-        separator = tk.Frame(root, height=2, bg="black")  # Thin black line
+        separator = tk.Frame(root, height=2, bg="black")  
         separator.pack(fill="x")
 
         title_label = tk.Label(header, text="Lokalebooker", bg="gray", fg="black", font=("Helvetica", 16, "bold"))
@@ -87,7 +82,6 @@ class GUI:
                   ).pack(pady=10)
 
 
-        # Add a Return Button
         tk.Button(self.login_frame, text="Return", width=15, command=self.handle_return).pack(pady=5)
 
 
@@ -97,7 +91,6 @@ class GUI:
         self.main_frame = tk.Frame(root, bg="white")
         tk.Label(self.main_frame, text="Lokaler:", font=("Helvetica", 14, "bold"), bg="white").pack(anchor="w", pady=(0, 10))
 
-        # Buttons for sorting
         sort_frame = tk.Frame(self.main_frame, bg="white")
         sort_frame.pack(pady=10)
 
@@ -143,14 +136,13 @@ class GUI:
         self.setup_ui()
 
     def handle_return(self):
-        # Hide the login screen and show the main screen (or any other screen)
         self.login_frame.pack_forget()
         self.main_frame.pack(fill="both", expand=True, padx=20, pady=20)
         self.update_room_buttons()
             
     def handle_room_click(self, room_name):
         room = next(room for room in self.rooms if room['name'] == room_name)
-        room_id = room['id']  # Find the room dictionary from the list
+        room_id = room['id']  
         if self.user == None:
             messagebox.showinfo("Login krævet", "Du skal være logget ind for at booke et lokale.")
             return
@@ -165,12 +157,10 @@ class GUI:
 
         popup.geometry(f"{popup_width}x{popup_height}")
 
-        # Calendar Canvas
         calendar_canvas = Canvas(popup, bg="white")
         calendar_canvas.grid(row=0, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)
         self.draw_calendar(calendar_canvas, room['id'])
 
-        # Form Frame
         form_frame = tk.Frame(popup)
         form_frame.grid(row=1, column=0, columnspan=2, pady=10, sticky="w")
 
@@ -224,11 +214,10 @@ class GUI:
             self.update_room_buttons()
         tk.Button(form_frame, text="Book", command=confirm_booking).grid(row=3, column=0, columnspan=2, pady=10)
 
-        # Adjust row and column weight to make sure the popup resizes properly
-        popup.grid_rowconfigure(0, weight=1)  # Calendar takes up most space
-        popup.grid_rowconfigure(1, weight=0)  # Form Frame doesn't need to expand
-        popup.grid_columnconfigure(0, weight=1)  # Expand across width
-        popup.grid_columnconfigure(1, weight=1)  # Expand across width
+        popup.grid_rowconfigure(0, weight=1)  
+        popup.grid_rowconfigure(1, weight=0)  
+        popup.grid_columnconfigure(0, weight=1) 
+        popup.grid_columnconfigure(1, weight=1) 
 
     def update_room_buttons(self):
         for room in self.rooms:
@@ -303,13 +292,11 @@ class GUI:
         self.update_room_buttons_sorted(sorted_rooms)
 
     def update_room_buttons_sorted(self, sorted_rooms):
-        # Remove all current buttons
         for button in self.room_buttons.values():
-            button.destroy()  # Actually removes them from memory
+            button.destroy()  
 
-        self.room_buttons.clear()  # Reset the dictionary
+        self.room_buttons.clear()  
 
-        # Recreate buttons in sorted order
         for room in sorted_rooms:
             status = "Optaget" if self.booking_manager.is_room_occupied(room['id']) else "Ledigt"
             color = "red" if status == "Optaget" else "green"
@@ -330,7 +317,7 @@ class GUI:
     def show_login_screen(self):
         self.main_frame.pack_forget()
         self.login_frame.pack(fill="both", expand=True, padx=20, pady=20)
-# Start Tkinter Application
+
 root = tk.Tk()
 app = GUI(root)
 root.mainloop()

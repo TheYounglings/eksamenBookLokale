@@ -10,7 +10,7 @@ class DataAccessLayer:
         return mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",  # Change if you've set a password
+            password="",  
             database="lokalebooker"
         )
 
